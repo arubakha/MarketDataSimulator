@@ -1,0 +1,79 @@
+﻿<Window x:Class="WPFThreading.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:item="clr-namespace:RandomItemsGenerator.Business;assembly=RandomItemsGenerator"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Height="650" Width="950">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceOne.xaml"/>
+                <ResourceDictionary Source="ItemTemplates.xaml"/>
+                <ResourceDictionary Source="VariedItemsTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <ListBox Width="300"  Margin="5"
+                     ItemContainerStyle="{StaticResource itemStyleLong}">
+                <item:Item/>
+                <Button Width="30" Height="30" HorizontalAlignment="Center" Content="Cmd" 
+                        Command="{Binding ButtonItemCommand}" 
+                        CommandParameter="{Binding}"></Button>
+                <sys:String>Test String</sys:String>
+                <Button Width="30" Height="30" HorizontalAlignment="Center" Content="Evt" Click="ButtonItem_Click"/>
+                <item:Item/>
+                <sys:AppDomainManager/>
+            </ListBox>
+            <ListBox Name="lstList" Width="300" Margin="5"
+                     ItemsSource="{Binding Items}" 
+                     ItemTemplateSelector="{StaticResource lengthBasedItemTemplateSelector}"
+                     ItemContainerStyle="{StaticResource itemStyleLong}"
+                     ItemsPanel="{StaticResource itemsPanel}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                     <!--ItemTemplate="{StaticResource itemTemplate}"-->
+            <ListBox Name="lstListString" Width="300" Margin="5" 
+                     ItemsSource="{Binding Items}" 
+                     ItemTemplate="{StaticResource itemTemplateString}"
+                     ItemContainerStyle="{StaticResource itemStyleShort}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox Name="txtLeft" Width="75" Height="25" Margin="5" Text="{Binding Thread1Data, Mode=OneWay}" MouseEnter="TextBox_MouseEnter"/>
+            <TextBox Name="txtRight" Width="75" Height="25" Margin="5" Text="{Binding Thread2Data, Mode=OneWay}"/>
+        </StackPanel>
+        
+        <Button Grid.Row="2" Name="btnButton" Width="75" Height="25" Content="Button" Margin="5"
+                Command="{Binding ButtonCommand}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Center" Margin="10">
+            <Button x:Name="btnLala" Grid.Row="3" Width="300" Height="50" 
+                    ContentTemplate="{StaticResource itemTemplateLong}">
+                <item:Item/> 
+            </Button>
+            <TextBlock Width="100"/>
+            <ItemsControl HorizontalAlignment="Left" Width="300" VerticalContentAlignment="Stretch"
+                          ItemTemplateSelector="{StaticResource variedItemsTemplateSelector}" 
+                          Hyperlink.RequestNavigate="ItemsControl_RequestNavigate">
+                <TextBox Name="tb" Margin="2" Text="Test" />
+                <sys:String>http://drwpf.com/blog/</sys:String>
+                <sys:String>http://forums.microsoft.com/MSDN/</sys:String>
+                <x:Static Member="ApplicationCommands.Copy" />
+                <x:Static Member="ApplicationCommands.Cut" />
+                <x:Static Member="ApplicationCommands.Paste" />
+                <x:Static Member="ApplicationCommands.SelectAll" />
+            </ItemsControl>
+            <ListBox Name="lstRandom" ItemsSource="{Binding Random}" Width="100" Margin="5"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

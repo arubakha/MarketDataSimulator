@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:templates="clr-namespace:WPFThreading.Presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:input="clr-namespace:System.Windows.Input;assembly=PresentationCore">
+
+    <DataTemplate DataType="{x:Type sys:String}" x:Key="variedItemsTemplateHyperlink">
+        <TextBlock>
+            <Hyperlink NavigateUri="{Binding}">
+                <TextBlock Text="{Binding}"/>
+            </Hyperlink>
+        </TextBlock>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type RoutedUICommand}" x:Key="variedItemsTemplateCommands">
+        <Grid>
+            <Button Grid.Column="0" Grid.Row="0" Content="{Binding}" Command="{Binding}" CommandTarget="{Binding ElementName=tb}"/>
+        </Grid>
+    </DataTemplate>
+
+    <templates:VariedItemsTemplateSelector x:Key="variedItemsTemplateSelector"
+                    StringTemplate="{StaticResource variedItemsTemplateHyperlink}"
+                    CommandTemplate="{StaticResource variedItemsTemplateCommands}"
+    />
+
+</ResourceDictionary>
